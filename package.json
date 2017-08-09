@@ -2,7 +2,7 @@
   "name": "Bamazon",
   "version": "1.0.0",
   "description": "Northwestern University Coding Bootcamp homework",
-  "main": "bamazon.js",
+  "main": "bamazonCustomer.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

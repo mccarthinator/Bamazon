@@ -9,21 +9,19 @@ password: 'root',
 database: 'bamazon'
 });
 
-// connection.connect(function(err) {
-//     createProduct();
-// });
+connection.connect(function(err) {
+    displayProductTable();
+});
 
-// function createProduct() {
-//     var query = connection.query(
-//         'insert into products set ?',
-//         {
-//             product_name: 'shake weight',
-//             department_name: 'fitness',
-//             price: 19.99,
-//             stock_quantity: 999
-//         },
-//         function(err, res) {
-//             console.log(res.affectedRows + ' product inserted');
-//         }
-//     )
-// }
+//////// need to first display in the console all of the items available for sale. Include the ids, names, and prices of products for sale ////////////
+function displayProductTable() {
+    console.log('Here are all the products currently for sale');
+    
+    connection.query("SELECT item_id, product_name, price FROM products", function(err, response) {
+    if (err) throw err;
+
+     for (var i = 0; i < response.length; i++) {
+          console.log("Product ID: " + response[i].item_id + " || Product Name: " + response[i].product_name + " || Product Price: " + response[i].price);
+        }
+  	});
+};
