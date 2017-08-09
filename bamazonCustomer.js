@@ -11,6 +11,7 @@ database: 'bamazon'
 
 connection.connect(function(err) {
     displayProductTable();
+    productQuestions();
 });
 
 //////// need to first display in the console all of the items available for sale. Include the ids, names, and prices of products for sale ////////////
@@ -25,3 +26,16 @@ function displayProductTable() {
         }
   	});
 };
+
+function productQuestions() { 
+inquirer.prompt ([
+	{
+		type: "input",
+		name: "item_id",
+		message: "What is the ID of the product you want?"
+	},
+	{
+		type: "input",
+		name: "quantity",
+		message: "How many of this product would you like to buy?"
+	}
