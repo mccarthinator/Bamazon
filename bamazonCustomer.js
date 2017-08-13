@@ -24,18 +24,64 @@ function displayProductTable() {
      for (var i = 0; i < response.length; i++) {
           console.log("Product ID: " + response[i].item_id + " || Product Name: " + response[i].product_name + " || Product Price: " + response[i].price);
         }
-  	});
+      });
+      
 };
 
 function productQuestions() { 
-inquirer.prompt ([
-	{
-		type: "input",
-		name: "item_id",
-		message: "What is the ID of the product you want?"
-	},
-	{
-		type: "input",
-		name: "quantity",
-		message: "How many of this product would you like to buy?"
-	}
+    inquirer.prompt ([
+        {
+            type: "input",
+            name: "item ID",
+            message: "What is the ID of the product you want?"
+        },
+        {
+            type: "input",
+            name: "quantity",
+            message: "How many of this product would you like to buy?"
+        }
+    ]).then(function(response) {
+		
+		var prodId = response.itemID; 
+		var id = parseInt(prodId) -1; 
+		var amount = parseInt(response.quantity); 	
+
+		connection.query("SELECT * FROM products", function(err, result) {
+
+			var cost = result[id].price;
+			var inStock = result[id].stock_qty;
+			var stockUpdate = inStock - amount;
+
+			//check if item is in stock
+			if(inStock === 0 && amount > inStock) {
+				console.log("Sorry, we're out of that item.")
+				displayProductTable();
+			}
+
+		    else if(amount > inStock) {
+				console.log("We don't have enough of this item for your order.");
+				displayProductTable();
+			} 
+			else {
+				//total
+				var total = amount * cost;
+
+				//update the database
+				connection.query("UPDATE products SET ? WHERE ?", [
+					{
+						stock_qty: stockUpdate
+					}, {
+						item_id: prodId
+					}
+				]);
+
+				console.log("Your total bill is: $" + total);
+
+				//end the connection.
+				connection.end();
+			}
+		});
+
+	});
+
+}
