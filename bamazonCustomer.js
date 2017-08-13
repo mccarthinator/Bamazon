@@ -19,20 +19,19 @@ function displayProductTable() {
     console.log('Here are all the products currently for sale');
     
     connection.query("SELECT item_id, product_name, price FROM products", function(err, response) {
-    if (err) throw err;
-
-     for (var i = 0; i < response.length; i++) {
-          console.log("Product ID: " + response[i].item_id + " || Product Name: " + response[i].product_name + " || Product Price: " + response[i].price);
-        }
-      });
-      
-};
+        if (err) throw err;
+    
+         for (var i = 0; i < response.length; i++) {
+              console.log("ID: " + response[i].item_id + " || Product: " + response[i].product_name + " || Price: " + response[i].price);
+            }
+          });
+    }
 
 function productQuestions() { 
     inquirer.prompt ([
         {
             type: "input",
-            name: "item ID",
+            name: "itemID",
             message: "What is the ID of the product you want?"
         },
         {
@@ -49,7 +48,7 @@ function productQuestions() {
 		connection.query("SELECT * FROM products", function(err, result) {
 
 			var cost = result[id].price;
-			var inStock = result[id].stock_qty;
+			var inStock = result[id].stock_quantity;
 			var stockUpdate = inStock - amount;
 
 			//check if item is in stock
@@ -69,7 +68,7 @@ function productQuestions() {
 				//update the database
 				connection.query("UPDATE products SET ? WHERE ?", [
 					{
-						stock_qty: stockUpdate
+						stock_quantity: stockUpdate
 					}, {
 						item_id: prodId
 					}
